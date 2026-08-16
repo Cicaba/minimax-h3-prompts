@@ -1,6 +1,8 @@
 # Full-Reference Mode: Ref2VA
 
-Use `Ref2VA` when one or more assets supply reusable identity, appearance, setting, style, motion, editing structure, voice, music, or sound. Boundary-frame-only tasks belong to the base modes unless broader reference roles are also required.
+Use `Ref2VA` when images, videos, or audio supply reusable identity, appearance, location, style, motion, camera, editing structure, voice, music, or sound. Boundary-frame-only tasks belong to the base modes unless an asset also has a broader reference role. Use the H3-Base-Ref2VA model family.
+
+Read [model-capabilities.md](model-capabilities.md) before writing a Ref2VA prompt and verify all input limits.
 
 ## Required output structure
 
@@ -26,24 +28,43 @@ non_diegetic_music:
 ...
 ```
 
+In `official-en`, write all six sections in English while preserving dialogue, lyrics, and visible text in their original language. In `zh-first`, keep field names, labels, relationship markers, shot markers, speaker IDs, and control tags in canonical English, while writing explanatory prose in Simplified Chinese.
+
 ## Label system
 
 - `<Subject N>`: reusable visible content such as a person, creature, object, costume, location, action style, pose, or effect.
-- `<Picture N>`: a concrete image asset used as a frame, keyframe, storyboard panel, or composition anchor.
-- `<Video N>`: a source video used for editing, continuation, shot structure, camera motion, rhythm, or timing.
-- `<Audio N>`: an audio signal used by copying or by reference to voice, music, beat, dialogue, or sound texture.
+- `<Picture N>`: a concrete image used as a first frame, last frame, keyframe, storyboard panel, edited frame, or composition anchor.
+- `<Video N>`: a whole-video source used for editing, continuation, camera movement, cuts, rhythm, or temporal structure.
+- `<Audio N>`: a standalone audio asset or explicitly enabled video soundtrack used by copying or reference.
 
-Number each label type independently in input order. Keep every label's meaning unchanged across all sections. If a picture only supplies a subject's appearance, define the subject and cite that picture in the definition; do not create an unnecessary standalone picture role.
+Number each label type independently in connection/input order. Keep every label's meaning stable. If an image only supplies a subject's appearance, define the subject and cite the picture in that definition; do not create an unnecessary standalone picture role.
 
-Always render asset references with canonical angle-bracket syntax: `<Picture 1>`, `<Video 1>`, and `<Audio 1>`. Never downgrade them to plain phrases such as `Picture 1` when the asset is being cited.
+An ordinary reference video does not automatically create `<Audio N>` merely because the file contains sound. Define an audio label only when that soundtrack is explicitly supplied or enabled as an audio condition.
 
-## subject_definitions
+## Assign one job to every reference
 
-Define each referenced unit in one concise line. State the source asset, what it contributes, and the traits that matter. Define assets by role, not merely by filename.
+State what each asset controls:
 
-## summary
+- identity or costume;
+- location layout or visual style;
+- action, motion, or camera path;
+- first frame, last frame, keyframe, or storyboard;
+- voice timbre, delivery, dialogue content, ambience, beat, or soundtrack;
+- source-video editing or continuation.
 
-Begin with a bracketed combination of applicable relationships:
+When one asset has multiple jobs, state them in one concise definition and distinguish which properties are reused, copied, changed, or ignored. Do not rely on filename semantics.
+
+## `subject_definitions`
+
+Define each referenced unit in one concise line. State the source asset, its job, and the traits that matter. For an audio reference bound to a target speaker, reuse that target speaker's global ID:
+
+```text
+<Audio 1> is the voice-timbre reference for <Subject 1> (S1).
+```
+
+## `summary`
+
+Begin with one bracketed combination of applicable task relationships:
 
 - `reference generation`
 - `keyframe completion`
@@ -52,36 +73,53 @@ Begin with a bracketed combination of applicable relationships:
 - `audio reuse`
 - `audio reference`
 
-Join multiple relationships with ` + `. Then summarize the target video and how its main references are used. Do not introduce new labels.
+Join multiple relationships with ` + `. Then summarize the target and the main asset roles without introducing new labels.
 
-## retention_analysis
+Use `video editing` only when a source video is directly modified, and `video continuation` only when new content resumes from a source video. A reference video used only for motion, camera, or rhythm normally belongs to `reference generation`.
 
-Give one line per label. For visible references, choose one marker:
+## `retention_analysis`
+
+Give one line per label. Visible references use one fixed marker:
 
 - `fully_preserved`
 - `partially_preserved`
 - `attribute_transfer`
 - `weak_reference`
 
-For audio, choose one marker:
+Audio references use one fixed marker:
 
 - `fully_copy`
 - `partially_copy`
 - `reference`
 - `weak_reference`
 
-State where the item appears or applies and what is preserved, changed, transferred, copied, or only loosely followed.
+State where the reference applies and what is preserved, changed, transferred, copied, or loosely followed. Do not treat newly requested target actions as losses of reference fidelity.
 
-## detailed_description
+## `detailed_description`
 
-Write the target timeline in playback order. Establish the overall visual medium and treatment, then use `[Shot 1]` without a timestamp and later shots with increasing `MM:SS.mmm` cut times. At a subject's first appearance, describe its referenced identity, frame position, and current action. Reuse its label without redefining it later.
+Write the target timeline in playback order. Establish visual medium and treatment first, then use `[Shot 1]` without a timestamp and later shots with increasing `MM:SS.mmm` cut times.
 
-Combine visual labels and speaker IDs when a referenced subject speaks, for example `<Subject 2> (S1)`. Put exact speech or lyrics inside `<d>[Language] ...</d>`. If a reference audio supplies only timbre or delivery, do not copy its original words. If an audio signal is reused directly, describe the copied signal rather than inventing a new speaker.
+At a subject's first appearance:
 
-Unless immediate speech is required, reserve `0.00-0.80` seconds for closed-mouth ambience before the first `<d>` event. Keep production directions outside `<d>` positive and observable. A picture reference does not preserve audio continuity; only a supplied `<Audio N>` may guide or copy audio according to its declared retention marker.
+1. cite its label;
+2. describe the referenced traits actually visible;
+3. establish frame position and current action;
+4. state where any motion, camera, style, voice, or audio reference begins to apply.
+
+Reuse the same label later without redefining it. For concrete frame anchors, use natural relationships such as `the shot begins from <Picture 1>`, `the keyframe corresponds to <Picture 2>`, or `the shot ends on <Picture 3>`.
+
+When a referenced subject speaks, keep both identifiers:
+
+```text
+<Subject 2> (S1) 说道：<d>[Chinese] 用户提供的原句。</d>
+```
+
+If reference audio supplies only timbre or delivery, do not carry its original words into the target. Copy source words only when the user explicitly requests dialogue/lyric reuse or reperformance. Use `[unclear]` for unintelligible spans instead of guessing.
+
+Official English generation prompts normally use about 350-500 words for `detailed_description`. In `zh-first`, match the information density rather than the English word count. Dialogue-heavy or simple single-action clips may be shorter when the timeline is already explicit.
 
 ## Sound fields
 
-Use `overall_soundscape` for target ambience, physical sounds, and any copied/referenced environmental layer. Use `non_diegetic_music` for audience-only score and its copy/reference relationship. Keep full dialogue and lyrics only in `detailed_description`.
+Use `overall_soundscape` for target ambience, physical sounds, non-verbal human sounds, and the corresponding audio copy/reference relationship. Use `non_diegetic_music` for audience-only score and its copy/reference relationship. Keep full dialogue and lyrics only in `detailed_description`.
 
-When the user requests no background score, write exactly `non_diegetic_music: N/A`.
+Write `overall_soundscape: N/A` only for complete silence. Write `non_diegetic_music: N/A` when there is no audience-only score.

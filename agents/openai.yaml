@@ -1,4 +1,4 @@
 interface:
   display_name: "MiniMax H3 提示词编写"
-  short_description: "生成中文优先、可直接使用且防原生音频串词的 H3 视频提示词"
-  default_prompt: "使用 $minimax-h3-prompts，把我的创意和参考素材转换成带音频防串词保护、可直接使用的 MiniMax H3 提示词。"
+  short_description: "按官方结构生成中文优先、动作与原生音频可控的 H3 提示词"
+  default_prompt: "使用 $minimax-h3-prompts，将我的视频创意和参考素材改写为符合官方结构、时长可行且音画可控的 MiniMax H3 提示词。"

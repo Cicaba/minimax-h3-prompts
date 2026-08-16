@@ -1,10 +1,10 @@
 # Base Modes: T2VA, I2VA, FL2VA, L2VA
 
-Use this reference when assets are absent or act as exact boundary frames.
+Use this reference when assets are absent or act only as exact boundary frames. These modes use the H3-Base-FL2VA family.
 
 ## Required output structure
 
-For `T2VA`, begin directly with these fields:
+For `T2VA`, begin directly with:
 
 ```text
 integrated_multimodal_description: [Shot 1] ...
@@ -14,49 +14,95 @@ overall_soundscape: ...
 non_diegetic_music: ...
 ```
 
-For keyframe modes, add one alignment line before the three fields:
+For keyframe modes, place the applicable official alignment instruction first, followed by one blank line:
 
-- `I2VA`: state that `<Picture 1>` is fully referenced as the first frame of `[Shot 1]` at `0.00` seconds.
-- `FL2VA`: state that `<Picture 1>` anchors `0.00` seconds and `<Picture 2>` anchors the final frame at the effective duration, each mapped to its actual shot.
-- `L2VA`: state that `<Picture 1>` anchors the final frame at the effective duration and belongs to the actual final shot.
+### I2VA
 
-Format the final duration with two decimals in the alignment line.
+```text
+For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.
+```
+
+### FL2VA
+
+```text
+How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot N) aligns with the S.SS-second mark of the target video.
+```
+
+### L2VA
+
+```text
+How the reference pictures align with the target video — <Picture 1> (from [Shot N]) aligns with the S.SS-second mark of the target video.
+```
+
+Keep these alignment instructions in English in both `zh-first` and `official-en` modes. Replace `N` with the actual final shot and `S.SS` with the effective duration to exactly two decimals. The FL2VA instruction is an official template exception to the normal angle-bracket label rule.
 
 ## Timeline construction
 
-- Start `[Shot 1]` without a timestamp. Establish medium/style, composition, subjects, environment, lighting, and the initial state.
-- Introduce later shots as `[Shot N] At MM:SS.mmm, ...`; timestamps must increase and remain below the final duration.
-- Add a cut only when it reveals a new subject, location, state, time, or materially different viewpoint. Use camera motion for smaller framing changes.
-- Keep each shot proportional to the action and dialogue it contains.
+- Start `[Shot 1]` without a timestamp. Establish visual medium, initial composition, subjects, environment, lighting, and current state.
+- Start later shots with `[Shot N] At MM:SS.mmm, ...`. Cut times must increase and remain below the effective duration.
+- Add a cut only for new subject, space, state, time, or materially different viewpoint information. Use camera movement for smaller framing changes.
+- Match description volume, action count, and dialogue to the time available.
+- End with an explicit pose, composition, result, transition, or frame landing.
+
+## Camera direction
+
+Write camera movement as part of the visible action. When useful, specify:
+
+```text
+motion type + amplitude + speed + compositional purpose
+```
+
+Canonical motion types include push in, pull out, pan, truck, tilt, pedestal, arc shot, tracking shot, static shot, shake, POV, zoom, and roll. Use amplitude and speed only when they change the result. Prefer one dominant camera path per shot.
 
 ## Keyframe behavior
 
 ### I2VA
 
-Treat Picture 1 as a hard initial condition. Preserve identity, clothing, palette, composition anchors, important objects, and spatial relationships. Develop forward through visible cause and effect.
+Treat `<Picture 1>` as the exact first frame. Preserve its identity, clothing, colors, composition anchors, objects, lighting, and spatial relationships, then develop through visible cause and effect.
+
+Recommended path:
+
+```text
+first-frame anchor -> action onset -> continuous development -> readable result
+```
 
 ### FL2VA
 
-Describe the motion path, pose changes, object manipulation, camera evolution, and lighting transition that connect the two frames. Prefer one continuous shot unless the user explicitly requires cuts. End on the supplied last-frame composition.
+Connect the supplied frames through pose changes, object manipulation, camera evolution, spatial movement, and lighting changes. Prefer one continuous shot unless the user explicitly asks for cuts. Land on the supplied last frame at the effective duration.
+
+Recommended path:
+
+```text
+first-frame state -> observable intermediate changes -> narrowing differences -> last-frame state
+```
 
 ### L2VA
 
-Infer a plausible earlier state, then progressively reduce differences until subject pose, object state, camera angle, lighting, and composition land on Picture 1 at the final moment.
+Infer a compatible opening, then progressively converge to the supplied final frame. The reference belongs to the actual final shot, not automatically to Shot 1.
 
-## Dialogue and visible text
+Recommended path:
 
-- Assign speakers `(S1)`, `(S2)`, and so on in order of first vocal event; reuse IDs across shots.
-- Put only the language tag and exact spoken words inside `<d>`.
-- Unless immediate speech is required, keep `0.00-0.80` seconds ambience-only with the visible speaker's mouth closed, then begin the first `<d>` event.
-- Express production constraints positively outside `<d>`; prefer `单一连续镜头` and `服装全程保持一致` over Chinese negative imperatives that native audio may vocalize.
-- For an off-screen voice, say it is off-screen and keep the corresponding visible character's lips closed when applicable.
-- Put literal visible text in double quotes and preserve it exactly.
-- If speech crosses a cut, explicitly describe audio continuity. Use `<cutoff>` only when the clip intentionally ends mid-utterance.
+```text
+plausible preceding state -> explicit transition path -> gradual convergence -> final-frame landing
+```
+
+## Speakers, dialogue, and visible text
+
+- Assign `(S1)`, `(S2)`, and later IDs in order of first vocal event. Reuse each ID across all shots.
+- On first vocal appearance, identify the speaker by visible identity plus relevant voice traits such as age range, pitch, timbre, delivery, pace, accent, and on-screen/off-screen status.
+- Put only the language tag and exact spoken words inside `<d>`:
+
+```text
+角色描述 (S1) 说道：<d>[Chinese] 用户提供的原句。</d>
+```
+
+- For voiceover in `official-en`, use `says in an off-screen voiceover`; after the `<d>` block, state that the corresponding on-screen character's lips remain closed. In `zh-first`, state the same relationship explicitly in Chinese.
+- Use `<scenetrans>` at both connecting dialogue fragments when one line crosses a cut, and state that the audio continues across the transition.
+- Use `<cutoff>` only when the clip intentionally ends mid-utterance.
+- Put literal visible text in English double quotation marks and preserve it exactly.
 
 ## Sound fields
 
-`overall_soundscape` summarizes ambience, movement, impacts, machinery, weather, breathing, laughter, and other physical/non-verbal sounds. Do not repeat dialogue or audience-only music here.
+`overall_soundscape` uses one compact paragraph for ambience, physical action sounds, and non-verbal human sounds. Keep dialogue, singing, and shot-specific diegetic events in `integrated_multimodal_description`. Write `overall_soundscape: N/A` only when the user requests complete silence.
 
-`non_diegetic_music` describes only score unheard by characters. Specify instruments, tempo/rhythm, and dynamic progression. Use `N/A` when there is no audience-only score.
-
-For a sequence of independently generated clips, repeat the same compact voice and sound-bed description in each clip. Do not claim that an I2VA boundary image preserves the preceding audio waveform.
+`non_diegetic_music` describes only audience-only score: instrumentation, tempo or rhythm, and dynamic development. Diegetic music belongs in the timeline. Write exactly `non_diegetic_music: N/A` when there is no audience-only score.

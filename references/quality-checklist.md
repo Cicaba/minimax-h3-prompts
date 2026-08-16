@@ -1,46 +1,60 @@
 # H3 Prompt Quality Checklist
 
-Check every item before returning the prompt.
+Check every item before returning a prompt.
 
-## Structure
+## Capability and mode
 
-- The selected mode matches the actual role of each asset.
-- Required fields are present once, in the correct order.
-- All labels are defined before use and retain one meaning.
-- Every asset citation uses canonical angle brackets, for example `<Picture 1>` rather than `Picture 1`.
-- No phantom picture, video, audio, speaker, dialogue, or text asset was invented.
+- Requested duration is 4-15 seconds, or a longer story is split into feasible clips.
+- The selected mode matches the actual role of every asset.
+- FL2VA-family prompts and Ref2VA prompts are not mixed into the wrong model workflow.
+- Ref2VA inputs stay within 9 images, 3 videos, 3 audio clips, and 12 mixed files; video/audio duration limits are respected.
+- For local ComfyUI, the effective `17k+5` frame-grid duration is used when final-frame timing matters.
+- Width and height use the workflow's supported multiple-of-32 grid when settings are included.
 
-## Timing
+## Structure and language
 
-- The prompt uses the effective rendered duration when known; otherwise it uses the requested duration.
-- `[Shot 1]` has no cut timestamp.
-- Later shot times increase, fit inside the duration, and leave enough time for their actions and dialogue.
-- For a ComfyUI H3 workflow using the common `17k+5` frame grid at 24 fps, calculate effective duration as `frame_count / 24`; align the final keyframe to that value rather than the rounded UI duration.
+- The selected mode's required fields appear once and in the correct order.
+- The output consistently uses `zh-first` or `official-en` production prose.
+- Canonical field names, `[Shot N]`, `(Sx)`, `<d>`, `<scenetrans>`, `<cutoff>`, and reference markers remain unchanged.
+- Every label is defined before use and keeps one meaning.
+- Asset citations use `<Picture N>`, `<Video N>`, `<Audio N>`, and `<Subject N>` except inside the exact official FL2VA alignment template.
+- No unavailable asset, speaker, dialogue, lyric, or visible text was invented.
 
-## Continuity
+## Timing and action budget
 
-- Identity, clothing, props, lighting, screen direction, and geography remain stable unless a change is explicitly animated.
-- I2VA begins from the supplied first frame.
+- `[Shot 1]` has no timestamp.
+- Later shot times increase, remain below the effective duration, and leave enough time for their content.
+- Major action count and cut count fit the conservative duration budget.
+- Every major action has setup, contact or transition, and visible consequence.
+- "More detail" enriches body mechanics, materials, lighting, space, and sound instead of adding simultaneous events.
+- One dominant camera path serves each shot's composition.
+- The ending is explicit and sustainable: final pose, composition, result, transition, or exact frame landing.
+
+## Continuity and references
+
+- Identity, clothing, props, weapon count, lighting, screen direction, and geography remain stable unless an explicit transition changes them.
+- I2VA develops forward from the supplied first frame.
 - FL2VA describes a continuous path and reaches the supplied last frame.
-- L2VA converges to the supplied final frame instead of treating it as an opening.
-- Ref2VA distinguishes a source asset from the reusable subject or attribute derived from it.
+- L2VA converges to the supplied final frame rather than treating it as an opening.
+- Ref2VA assigns every reference an explicit job and distinguishes subject identity from whole-asset editing/continuation roles.
+- Wide shots are used for geography and choreography; identity-critical facial detail receives an appropriate closer shot.
 
-## Audio and text
+## Dialogue, text, and audio
 
-- Speaker IDs are stable and assigned only to actual vocal sources.
-- Dialogue, lyrics, and visible text preserve the user's exact language and wording.
+- Speaker IDs are assigned in order of first vocal event and reused consistently.
+- Every line names or labels its actual speaker and fits natural delivery time.
+- Dialogue, lyrics, and visible text preserve user-supplied language and wording.
 - Only intended speech or lyrics appear inside `<d>...</d>`.
-- Unless immediate speech is required, the first `0.80` seconds keep visible speakers closed-mouth and ambience-only; the first `<d>` event begins afterward.
-- Outside exact dialogue, lyrics, and visible text, scan for `不`, `不要`, `不能`, `禁止`, `避免`, `切勿`, and similar negative production language. Rewrite it as positive, observable state wherever possible.
-- Image/keyframe continuity is not described as audio continuity. Independently generated clips repeat stable voice and sound-bed descriptors and leave room for post-production crossfades.
-- Diegetic events appear in the shot timeline; ambience/physical sounds appear in `overall_soundscape`; audience-only score appears in `non_diegetic_music`.
-- An explicit no-music request produces exactly `non_diegetic_music: N/A`.
-- Spoken duration is realistic for the clip; shorten staging or recommend a longer clip rather than silently deleting required dialogue.
+- Voiceover is explicitly off-screen and the related visible character's lips remain closed.
+- Dialogue crossing a cut uses `<scenetrans>` and explicit audio continuity; intentional truncation uses `<cutoff>`.
+- Production prose is scanned for `不`, `不要`, `不能`, `禁止`, `避免`, `切勿`, and similar negative instructions; these are rewritten positively where possible.
+- Experimental undocumented vocal/emphasis tags are absent unless the user explicitly requests a test.
+- Diegetic events stay in the timeline, ambience/physical sounds stay in `overall_soundscape`, and audience-only score stays in `non_diegetic_music`.
+- `overall_soundscape: N/A` means complete silence; `non_diegetic_music: N/A` means no audience-only score.
+- Independent clips repeat voice and sound-bed descriptors and do not claim image-based audio continuity.
 
-## Clarity
+## Final clarity
 
-- Every sentence maps to something observable or audible.
-- Camera direction includes a subject or compositional purpose.
-- The prompt avoids contradictory motions, duplicate action beats, excessive cuts, and abstract mood-only wording.
-- The ending is explicit: final pose, composition, action result, transition, or freeze frame.
-- In INT8/FP8 or short-step workflows, the audio plan is simplified and uses a `0.80-1.00` second ambience-only lead-in.
+- Every sentence maps to an observable or audible result.
+- The prompt contains no plot-summary filler, contradictory camera commands, duplicate beats, or unresolved labels.
+- Community heuristics are presented as best effort rather than guaranteed behavior.
