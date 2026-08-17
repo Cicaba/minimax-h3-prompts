@@ -18,6 +18,7 @@ Check every item before returning a prompt.
 - Canonical field names, `[Shot N]`, `(Sx)`, `<d>`, `<scenetrans>`, `<cutoff>`, and reference markers remain unchanged.
 - Every label is defined before use and keeps one meaning.
 - Asset citations use `<Picture N>`, `<Video N>`, `<Audio N>`, and `<Subject N>` except inside the exact official FL2VA alignment template.
+- Contact sheets, storyboard grids, arrows, labels, and timing marks remain planning material unless the user intends them as visible target content.
 - No unavailable asset, speaker, dialogue, lyric, or visible text was invented.
 
 ## Timing and action budget
@@ -26,6 +27,7 @@ Check every item before returning a prompt.
 - Later shot times increase, remain below the effective duration, and leave enough time for their content.
 - Major action count and cut count fit the conservative duration budget.
 - Every major action has setup, contact or transition, and visible consequence.
+- Every shot has a readable initial state, action path, consequence, and end state or handoff.
 - "More detail" enriches body mechanics, materials, lighting, space, and sound instead of adding simultaneous events.
 - One dominant camera path serves each shot's composition.
 - The ending is explicit and sustainable: final pose, composition, result, transition, or exact frame landing.
@@ -53,9 +55,12 @@ Check every item before returning a prompt.
 - Diegetic events stay in the timeline, ambience/physical sounds stay in `overall_soundscape`, and audience-only score stays in `non_diegetic_music`.
 - `overall_soundscape: N/A` means complete silence; `non_diegetic_music: N/A` means no audience-only score.
 - Independent clips repeat voice and sound-bed descriptors and do not claim image-based audio continuity.
+- A directly reused song or soundtrack uses `<Audio N>` for embedded vocals; speaker IDs are reserved for independent vocal sources.
+- The same audible music layer is not described twice as both native score and a separate replacement track.
 
 ## Final clarity
 
 - Every sentence maps to an observable or audible result.
+- Broad style words are backed by concrete material, lighting, palette, lens, texture, or motion properties.
 - The prompt contains no plot-summary filler, contradictory camera commands, duplicate beats, or unresolved labels.
 - Community heuristics are presented as best effort rather than guaranteed behavior.

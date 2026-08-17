@@ -42,6 +42,7 @@ Keep these alignment instructions in English in both `zh-first` and `official-en
 - Start later shots with `[Shot N] At MM:SS.mmm, ...`. Cut times must increase and remain below the effective duration.
 - Add a cut only for new subject, space, state, time, or materially different viewpoint information. Use camera movement for smaller framing changes.
 - Match description volume, action count, and dialogue to the time available.
+- Build each shot from composition and initial state through action and consequence to an explicit end state or continuity handoff.
 - End with an explicit pose, composition, result, transition, or frame landing.
 
 ## Camera direction
@@ -88,7 +89,8 @@ plausible preceding state -> explicit transition path -> gradual convergence -> 
 
 ## Speakers, dialogue, and visible text
 
-- Assign `(S1)`, `(S2)`, and later IDs in order of first vocal event. Reuse each ID across all shots.
+- Assign `(S1)`, `(S2)`, and later IDs only to actual vocal sources, in order of first vocal event. Reuse each ID across all shots.
+- When already-numbered speakers vocalize together, use a compound ID such as `(S1,S2)`.
 - On first vocal appearance, identify the speaker by visible identity plus relevant voice traits such as age range, pitch, timbre, delivery, pace, accent, and on-screen/off-screen status.
 - Put only the language tag and exact spoken words inside `<d>`:
 
@@ -103,6 +105,6 @@ plausible preceding state -> explicit transition path -> gradual convergence -> 
 
 ## Sound fields
 
-`overall_soundscape` uses one compact paragraph for ambience, physical action sounds, and non-verbal human sounds. Keep dialogue, singing, and shot-specific diegetic events in `integrated_multimodal_description`. Write `overall_soundscape: N/A` only when the user requests complete silence.
+`overall_soundscape` uses one compact paragraph of about 1-4 sentences for ambience, physical action sounds, and non-verbal human sounds. Keep dialogue, singing, and shot-specific diegetic events in `integrated_multimodal_description`. Write `overall_soundscape: N/A` only when the user requests complete silence.
 
-`non_diegetic_music` describes only audience-only score: instrumentation, tempo or rhythm, and dynamic development. Diegetic music belongs in the timeline. Write exactly `non_diegetic_music: N/A` when there is no audience-only score.
+`non_diegetic_music` uses about 1-3 sentences and describes only audience-only score: instrumentation, tempo or rhythm, and dynamic development. State audible musical properties instead of an abstract mood or an explanation of emotional purpose. Diegetic music belongs in the timeline. Write exactly `non_diegetic_music: N/A` when there is no audience-only score.

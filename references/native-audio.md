@@ -5,6 +5,7 @@ Use this reference whenever H3 jointly generates dialogue, voiceover, lyrics, am
 ## Bind every vocal event
 
 - Assign `(S1)`, `(S2)`, and later IDs in order of first vocal event.
+- Use a compound ID such as `(S1,S2)` when already-numbered speakers vocalize together.
 - At the first vocal event, identify the source by visible subject or narrator role, on-screen/off-screen status, age range, voice pitch, timbre, pace, accent, and delivery when relevant.
 - Reuse the same ID for the same source across every shot and independently generated segment.
 - Put only the language tag and exact spoken words or lyrics inside `<d>`.
@@ -55,6 +56,7 @@ Preserve negation when it belongs to user-supplied dialogue, lyrics, or visible 
 - Put timed dialogue, singing, diegetic music, and shot-specific synchronized effects in the main timeline.
 - Use `overall_soundscape` for continuous ambience, physical sounds, and non-verbal human sounds.
 - Use `non_diegetic_music` only for audience-only score, with instrumentation, tempo/rhythm, and dynamic changes.
+- Represent each audible music layer once. Do not describe the same soundtrack as both native generated score and a separate replacement track.
 - Write `non_diegetic_music: N/A` to request no audience-only score.
 - Write `overall_soundscape: N/A` only when the entire target is silent.
 
@@ -63,11 +65,13 @@ Preserve negation when it belongs to user-supplied dialogue, lyrics, or visible 
 - Follow Ref2VA connection order and use one consistent `<Audio N>` / `<Video N>` mapping throughout the prompt.
 - State whether the target copies the signal or only references timbre, delivery, beat, ambience, or music style.
 - Do not copy words from a voice-timbre reference unless the user explicitly requests those words.
+- When words are audible only inside a directly reused song or complete soundtrack, use `<Audio N>` as the source; reserve `(Sx)` for a concrete independent vocal source.
 - Community tests report that combining several standalone audio references with enabled reference-video soundtracks can reduce clarity. Treat this as workflow-dependent: start with the fewest audio conditions, generate ambience from text when feasible, then add references one at a time.
 
 ## Continue across independent clips
 
 - Repeat the same concise speaker voice description, ambience, music tempo, instrumentation, loudness, and acoustic-space wording in every segment.
+- Place dialogue and lyric cut points at pauses, breaths, beats, or other intentional boundaries whenever possible.
 - Preserve each segment's intended opening timing; add diagnostic padding only when the user explicitly requests an onset-artifact test.
 - End on sustainable ambience or a music bed suitable for a crossfade.
 - A boundary image preserves visual state only; it does not preserve the previous waveform, voice phase, ambience phase, or music phase.

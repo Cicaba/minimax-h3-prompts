@@ -78,5 +78,8 @@ Repeat only the traits that are at risk in the current shot: identity, costume, 
 For a sequence of independent clips, preserve:
 
 - the actual final frame as the next visual boundary when using I2VA;
-- screen direction and subject spacing in text;
-- separately restated audio bed, speaker voice, music tempo, and acoustic space.
+- pose, facing direction, screen position, subject spacing, prop count/state, and stable environmental landmarks;
+- camera height, movement direction, action momentum, light direction, and color treatment;
+- separately restated audio bed, speaker voice, music tempo, acoustic space, and current audio phase.
+
+For a hard cut, keep the global identity/style lock and use a readable transition relationship such as matched movement direction, shared shape, object occlusion, impact, or beat cut.

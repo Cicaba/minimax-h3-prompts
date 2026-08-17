@@ -24,13 +24,15 @@ Produce H3 prompt text only. Do not require ComfyUI, an API, a specific operatin
    - `L2VA`: one image is the exact last frame;
    - `Ref2VA`: images, videos, or audio guide reusable identity, setting, style, motion, camera, voice, or editing relationships.
 4. Read [base-modes.md](references/base-modes.md) for `T2VA`, `I2VA`, `FL2VA`, or `L2VA`. Read [reference-mode.md](references/reference-mode.md) for `Ref2VA`.
-5. Read [motion-budget.md](references/motion-budget.md) for action scenes, dances, multiple interacting subjects, complex camera work, 10-15 second clips, or quantized/short-step local workflows.
-6. Read [native-audio.md](references/native-audio.md) whenever H3 generates dialogue, voiceover, lyrics, ambience, sound effects, music, or multiple clips that will be joined.
-7. Draft three private planning artifacts before the final prompt:
-   - an asset-role map;
-   - a shot-and-action budget with observable cause and effect;
-   - an audio timeline with stable speakers and enough time for every line.
-8. Apply [quality-checklist.md](references/quality-checklist.md), then return the prompt.
+5. Read [prompt-craft.md](references/prompt-craft.md) for stylized, under-specified, brand/product, music-led, multi-clip, or continuity-critical requests.
+6. Read [motion-budget.md](references/motion-budget.md) for action scenes, dances, multiple interacting subjects, complex camera work, 10-15 second clips, or quantized/short-step local workflows.
+7. Read [native-audio.md](references/native-audio.md) whenever H3 generates dialogue, voiceover, lyrics, ambience, sound effects, music, or multiple clips that will be joined.
+8. Draft four private planning artifacts before the final prompt:
+   - a source-of-truth and asset-role map;
+   - a global identity/style/scene lock;
+   - a shot-and-action budget with initial state, cause and effect, end state, and continuity handoff;
+   - an audio/text timeline with stable sources and enough time for every line.
+9. Apply [quality-checklist.md](references/quality-checklist.md), then return the prompt.
 
 ## Language Strategy
 
@@ -52,10 +54,13 @@ Produce H3 prompt text only. Do not require ComfyUI, an API, a specific operatin
 
 - Describe visible and audible events, not plot summaries or adjective stacks.
 - Establish identity, clothing, props, geography, lighting, and initial pose before complex motion.
+- Build each shot as initial state -> action path -> observable consequence -> end state or handoff.
 - Treat detail density and event count separately. Add material, lighting, body mechanics, reactions, and sound to an existing action beat; do not turn “more detail” into more simultaneous actions.
 - Give each major action a readable setup, contact or transition, and result.
 - Express camera motion as a natural action tied to composition. Use one dominant camera path per shot.
+- Translate broad style words into observable material, lighting, palette, lens, texture, and motion properties.
 - Prefer a coherent sequence over maximum cut count. Every explicit cut must reveal new subject, space, state, time, or viewpoint information.
+- Keep storyboard grids, arrows, labels, timing marks, and approval notes out of the render prompt unless they are intended visible content.
 - Separate diegetic ambience and physical sounds from audience-only score.
 - Treat visual continuity and audio continuity independently across separately generated clips.
 - Preserve the user's intended opening. Do not add a closed-mouth state, silent interval, ambience-only lead-in, or delayed music by default; use any of these only when the user explicitly requests them.

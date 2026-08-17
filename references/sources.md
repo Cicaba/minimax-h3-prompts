@@ -1,12 +1,15 @@
 # Sources and Evidence Priority
 
-Last verified: 2026-08-16.
+Last verified: 2026-08-17.
 
 Use official sources for syntax, capability limits, model families, and ComfyUI settings. Use community reports only for failure patterns and conservative production heuristics.
 
 ## Official
 
 - MiniMax H3 repository and system specifications: <https://github.com/MiniMax-AI/MiniMax-H3>
+- Official ModelScope base-mode prompt guide: <https://modelscope.cn/models/MiniMax/MiniMax-H3/file/view/master/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md?status=1>
+- Official ModelScope full-reference prompt guide: <https://modelscope.cn/models/MiniMax/MiniMax-H3/file/view/master/docs/VIDEO_PROMPT_WRITING_GUIDE_ref_en.md?status=1>
+- Official bundled skills and prompt-craft workflows: <https://github.com/MiniMax-AI/MiniMax-H3/tree/main/skills>
 - Official portable prompt-writing skill: <https://github.com/MiniMax-AI/MiniMax-H3/tree/main/skills/h3-prompt-writing>
 - Official base-mode guide: <https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/references/base-en.txt>
 - Official full-reference guide: <https://github.com/MiniMax-AI/MiniMax-H3/blob/main/skills/h3-prompt-writing/references/ref-en.txt>

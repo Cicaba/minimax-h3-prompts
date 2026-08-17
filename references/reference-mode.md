@@ -39,6 +39,8 @@ In `official-en`, write all six sections in English while preserving dialogue, l
 
 Number each label type independently in connection/input order. Keep every label's meaning stable. If an image only supplies a subject's appearance, define the subject and cite the picture in that definition; do not create an unnecessary standalone picture role.
 
+One `<Subject N>` may combine traits from several assets, and one asset may define several separately tracked subjects. State which source supplies each trait. Keep contact sheets or storyboard grids as planning references unless their panel layout is intended to appear in the target.
+
 An ordinary reference video does not automatically create `<Audio N>` merely because the file contains sound. Define an audio label only when that soundtrack is explicitly supplied or enabled as an audio condition.
 
 ## Assign one job to every reference
@@ -77,6 +79,8 @@ Join multiple relationships with ` + `. Then summarize the target and the main a
 
 Use `video editing` only when a source video is directly modified, and `video continuation` only when new content resumes from a source video. A reference video used only for motion, camera, or rhythm normally belongs to `reference generation`.
 
+In `official-en`, a direct editing summary begins with `The target video is an edited version of <Video 1>.` after the task-type prefix.
+
 ## `retention_analysis`
 
 Give one line per label. Visible references use one fixed marker:
@@ -94,6 +98,8 @@ Audio references use one fixed marker:
 - `weak_reference`
 
 State where the reference applies and what is preserved, changed, transferred, copied, or loosely followed. Do not treat newly requested target actions as losses of reference fidelity.
+
+Keep speaker IDs out of `retention_analysis`; `(Sx)` belongs to actual vocal-source definitions and vocal events.
 
 ## `detailed_description`
 
@@ -115,6 +121,10 @@ When a referenced subject speaks, keep both identifiers:
 ```
 
 If reference audio supplies only timbre or delivery, do not carry its original words into the target. Copy source words only when the user explicitly requests dialogue/lyric reuse or reperformance. Use `[unclear]` for unintelligible spans instead of guessing.
+
+When verbal content exists only inside a directly reused song or complete soundtrack, cite `<Audio N>` as the audible source and do not invent a separate speaker ID. Assign `(Sx)` only when a concrete person, character, narrator, or other independent source produces the voice.
+
+For dialogue or lyrics transcribed from reference audio, preserve the source words and language while normalizing only decorative punctuation, emoji, bullets, and repeated tildes. Preserve user-supplied text verbatim.
 
 Official English generation prompts normally use about 350-500 words for `detailed_description`. In `zh-first`, match the information density rather than the English word count. Dialogue-heavy or simple single-action clips may be shorter when the timeline is already explicit.
 

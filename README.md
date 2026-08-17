@@ -2,7 +2,7 @@
 
 一个中文优先、兼容 MiniMax 官方提示词结构的 Codex 技能，用于把创意、脚本、对白、关键帧和图片/视频/音频参考转换为可直接使用的 H3 视频提示词。
 
-本次版本根据 MiniMax 官方 H3 仓库、官方提示词指南、ComfyUI 官方工作流文档以及社区实际生成反馈进行了系统更新。
+本次版本根据 MiniMax 官方 Base/Ref 提示词指南、官方 H3 Skills、ComfyUI 官方工作流文档以及社区实际生成反馈进行了系统更新。
 
 ## 主要能力
 
@@ -12,9 +12,12 @@
 - 自动校验官方 4–15 秒时长、24fps、参考素材数量及模型模式边界。
 - 为动作、打斗、舞蹈和多人场景设置保守的镜头与动作预算。
 - 区分“增加细节”和“增加事件”，降低动作拥挤、肢体错乱及镜头失控概率。
+- 将抽象风格词转换为可观察的材质、光线、色彩、镜头和运动属性。
+- 每个镜头明确起始状态、动作路径、可见结果和连续性移交状态。
+- 将联系表、分镜网格、箭头和时间标注留在制作阶段，防止误生成进成片。
 - 为对白绑定稳定的 `(S1)`、`(S2)` 说话人，并使用 `<d>[Language] ...</d>` 保存原句。
 - 处理画外音、跨镜头对白 `<scenetrans>`、结尾截断 `<cutoff>`、环境声和观众配乐。
-- 针对本地量化/短步数工作流提供开场音频碎片、串词和多声源冲突缓解策略。
+- 针对本地量化/短步数工作流提供音频碎片、串词和多声源冲突的可选排查策略。
 - 为 ComfyUI 的 `17k+5` 帧网格计算真实有效时长。
 
 ## 官方能力边界
@@ -92,7 +95,8 @@ python scripts/h3_duration.py 15 --json
 - 每个对白明确绑定实际说话人。
 - 只有真正要发声的内容进入 `<d>`。
 - 制作约束尽量改写为正向、可观察的画面状态。
-- 本地 INT8/FP8 或短步数工作流默认预留约 0.8–1.0 秒闭口环境声开场。
+- 开场动作、对白、环境声和音乐严格遵循用户要求，不默认添加闭口、静音或环境声缓冲。
+- 同一音乐层只描述一次，防止原生配乐与外部替换配乐重复。
 - 多个独立片段分别重述声线、环境声、音乐速度和声学空间。
 - 边界图片只延续画面，无法继承上一段音频波形。
 - 若开头仍出现毫秒级残音，优先在后期裁切或淡入，而不是继续堆叠文字禁令。
@@ -111,6 +115,7 @@ minimax-h3-prompts/
     ├── model-capabilities.md
     ├── motion-budget.md
     ├── native-audio.md
+    ├── prompt-craft.md
     ├── quality-checklist.md
     ├── reference-mode.md
     └── sources.md
@@ -119,6 +124,9 @@ minimax-h3-prompts/
 ## 资料来源
 
 - [MiniMax H3 官方仓库](https://github.com/MiniMax-AI/MiniMax-H3)
+- [MiniMax 官方 Base 提示词指南](https://modelscope.cn/models/MiniMax/MiniMax-H3/file/view/master/docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md?status=1)
+- [MiniMax 官方 Ref 提示词指南](https://modelscope.cn/models/MiniMax/MiniMax-H3/file/view/master/docs/VIDEO_PROMPT_WRITING_GUIDE_ref_en.md?status=1)
+- [MiniMax 官方 H3 Skills](https://github.com/MiniMax-AI/MiniMax-H3/tree/main/skills)
 - [MiniMax 官方 H3 Prompt Writing Skill](https://github.com/MiniMax-AI/MiniMax-H3/tree/main/skills/h3-prompt-writing)
 - [ComfyUI 官方 MiniMax H3 教程](https://docs.comfy.org/tutorials/video/minimax/minimax-h3)
 - 详细官方与社区资料清单见 [`references/sources.md`](references/sources.md)。
