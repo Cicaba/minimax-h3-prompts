@@ -48,6 +48,7 @@ Check every item before returning a prompt.
 - Voiceover is explicitly off-screen and the related visible character's lips remain closed.
 - Dialogue crossing a cut uses `<scenetrans>` and explicit audio continuity; intentional truncation uses `<cutoff>`.
 - Production prose is scanned for `不`, `不要`, `不能`, `禁止`, `避免`, `切勿`, and similar negative instructions; these are rewritten positively where possible.
+- The prompt preserves the requested opening and does not add a closed-mouth state, silent interval, ambience-only lead-in, or delayed music unless the user explicitly requested it.
 - Experimental undocumented vocal/emphasis tags are absent unless the user explicitly requests a test.
 - Diegetic events stay in the timeline, ambience/physical sounds stay in `overall_soundscape`, and audience-only score stays in `non_diegetic_music`.
 - `overall_soundscape: N/A` means complete silence; `non_diegetic_music: N/A` means no audience-only score.

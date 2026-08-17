@@ -58,6 +58,7 @@ Produce H3 prompt text only. Do not require ComfyUI, an API, a specific operatin
 - Prefer a coherent sequence over maximum cut count. Every explicit cut must reveal new subject, space, state, time, or viewpoint information.
 - Separate diegetic ambience and physical sounds from audience-only score.
 - Treat visual continuity and audio continuity independently across separately generated clips.
+- Preserve the user's intended opening. Do not add a closed-mouth state, silent interval, ambience-only lead-in, or delayed music by default; use any of these only when the user explicitly requests them.
 
 ## Evidence Policy
 

@@ -28,24 +28,19 @@ Community and local workflows report occasional prompt fragments or gibberish be
   - `不切镜` -> `单一连续镜头`
   - `不改变服装` -> `服装全程保持一致`
   - `不要增加武器` -> `武器全程保持为单剑`
-  - `不说话` or `无对白` -> `角色闭口静默`
+  - `不说话` or `无对白` -> `声音由环境声、动作声与指定音乐构成`
   - `避免爆炸` -> `场面保持克制，仅呈现指定能量效果`
 - Keep unavoidable restrictions short, late in the description, and away from the first vocal event.
 - Do not emit experimental, undocumented emphasis or non-verbal tags by default. Some community tests report that such tags may become gibberish.
 
 Preserve negation when it belongs to user-supplied dialogue, lyrics, or visible text.
 
-## Protect the opening boundary
+## Preserve the intended opening
 
-For local INT8/FP8, short-step, dialogue-heavy, or independently generated clips, reserve `0.80-1.00` seconds for a closed-mouth ambience-only lead-in unless immediate speech is required:
-
-```text
-00:00.000-00:00.900，角色闭口静默，只有环境声与衣料轻响；00:00.900后开始对白。
-```
-
-This is a conservative community heuristic, not an official H3 syntax requirement. A few workflows still produce a millisecond-scale onset fragment; when it survives prompt revisions, trim or fade the opening in post-production rather than adding more verbal restrictions.
-
-For clips with no intended human voice, explicitly keep visible characters closed-mouth and describe only the wanted ambience and physical sounds. `overall_soundscape: N/A` is reserved for complete silence.
+- Start action, dialogue, ambience, and music at the times implied or specified by the user.
+- Do not insert a mandatory silent interval, ambience-only lead-in, delayed music entrance, or closed-mouth pose.
+- When the user explicitly asks to troubleshoot a recurring onset fragment, offer timing padding, a short fade, or post-production trimming as optional tests rather than embedding them in every prompt.
+- For clips with no intended human voice, describe the desired ambience, action sounds, and music without prescribing the visible character's mouth state. `overall_soundscape: N/A` is reserved for complete silence.
 
 ## Match dialogue to time
 
@@ -73,6 +68,6 @@ For clips with no intended human voice, explicitly keep visible characters close
 ## Continue across independent clips
 
 - Repeat the same concise speaker voice description, ambience, music tempo, instrumentation, loudness, and acoustic-space wording in every segment.
-- Give each segment its own opening boundary protection when local audio artifacts are a concern.
+- Preserve each segment's intended opening timing; add diagnostic padding only when the user explicitly requests an onset-artifact test.
 - End on sustainable ambience or a music bed suitable for a crossfade.
 - A boundary image preserves visual state only; it does not preserve the previous waveform, voice phase, ambience phase, or music phase.
